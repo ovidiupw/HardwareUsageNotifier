@@ -1,6 +1,9 @@
 # Hardware Usage Notifier
 
-One Paragraph of project description goes here  
+A service that lets the user set thresholds for hardware usage and get notified
+when those thresholds are exceeded.
+
+--- The rest of this file is dummy / work in progress ---
 
 ## Getting Started
 
