@@ -7,53 +7,49 @@ when those thresholds are exceeded.
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+These instructions will get you a copy of the project up and running on your local
+machine for development and testing purposes. See deployment for notes on how to 
+deploy the project on a live system.
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
-
-```
-Give examples
-```
+* [Python 3.7](https://www.python.org/downloads/release/python-371/)
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running
+#### Use only
+1. Pull the package locally ([git](https://git-scm.com/) is required): 
+    ```
+    $ git clone git@github.com:ovidiupw/HardwareUsageNotifier.git
+    ```
+1. Go to your terminal and change the directory to the package root.
+1. Make the scripts in the package available to be run:
+    ```
+    $ pip install virtualenv
+    $ virtualenv venv
+    $ . venv/bin/activate
+    $ python setup.py install
+    $ pip install --editable .
+    ```
+    On Windows, if ```. venv/bin/activate``` does not work, use ```virtualenv.exe activate```.<br/>
+    If you get permission errors, run with ```sudo``` on Linux or as ```Administrator``` on 
+    Windows. <br/>
+    It is recommended to use ```bash``` on both Windows (e.g. Git Bash) and Linux.  
+1. Afterwards the hardware usage notifier CLI should be available:
+    ```sudo pip install virtualenv
+    $ hardware_usage_notifier --help
+    Usage: hardware_usage_notifier [OPTIONS] COMMAND [ARGS]...
+    [...]
 
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
+    ```
 
 ## Running the tests
 
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
+1. Go to the root of this package and run:
+    ```
+    pip install pytest
+    pytest
+    ```
 
 ## Deployment
 

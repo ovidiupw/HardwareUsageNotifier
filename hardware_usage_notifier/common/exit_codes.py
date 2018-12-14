@@ -1,0 +1,2 @@
+SUCCESS_EXIT_CODE = 0
+
