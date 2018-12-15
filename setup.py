@@ -18,7 +18,7 @@ setup(
     long_description=open('README.md').read(),
     entry_points='''
         [console_scripts]
-        hardware_usage_notifier=hardware_usage_notifier.bin.hardware_usage_notifier:cli
+        hardware_usage_notifier=hardware_usage_notifier.cli.hardware_usage_notifier:cli
     ''',
     install_requires=['click'],
     tests_require=['pytest']

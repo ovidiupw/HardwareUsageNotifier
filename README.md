@@ -22,7 +22,9 @@ deploy the project on a live system.
     ```
     $ git clone git@github.com:ovidiupw/HardwareUsageNotifier.git
     ```
+    
 1. Go to your terminal and change the directory to the package root.
+
 1. Make the scripts in the package available to be run:
     ```
     $ pip install virtualenv
@@ -31,12 +33,16 @@ deploy the project on a live system.
     $ python setup.py install
     $ pip install --editable .
     ```
-    On Windows, if ```. venv/bin/activate``` does not work, use ```virtualenv.exe activate```.<br/>
-    If you get permission errors, run with ```sudo``` on Linux or as ```Administrator``` on 
-    Windows. <br/>
-    It is recommended to use ```bash``` on both Windows (e.g. Git Bash) and Linux.  
+    
+    ##### Troubleshooting:
+    1. If you get permission errors, run with ```sudo``` on Linux or as ```Administrator``` on 
+    Windows.
+    1. On Windows, if ```. venv/bin/activate``` does not work, use ```virtualenv.exe activate```.
+    1. If the ```pip install --editable .``` command does not work the first time, run it again.
+    1. It is recommended to use ```bash``` on both Windows (e.g. Git Bash) and Linux. 
+    
 1. Afterwards the hardware usage notifier CLI should be available:
-    ```sudo pip install virtualenv
+    ```
     $ hardware_usage_notifier --help
     Usage: hardware_usage_notifier [OPTIONS] COMMAND [ARGS]...
     [...]
