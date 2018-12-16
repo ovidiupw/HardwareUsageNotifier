@@ -1,7 +1,7 @@
 from click import STRING
 
 from hardware_usage_notifier.cli.options.option import Option
-from hardware_usage_notifier.cli.config import Config
+from hardware_usage_notifier.cli.config.config import Config
 
 
 class ConfigFile(Option):

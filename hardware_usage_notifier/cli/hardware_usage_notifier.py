@@ -35,7 +35,7 @@ def cli():
               type=start_monitor_command.config_file.type,
               default=start_monitor_command.config_file.default,
               callback=start_monitor_command.config_file.callback)
-def start_monitor(config):
+def start_monitor(config_file):
     click.echo('Parsed config successfully. Will start monitor. For now, this is just a dummy message')
     exit(exit_codes.SUCCESS_EXIT_CODE)
 

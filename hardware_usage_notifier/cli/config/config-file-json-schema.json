@@ -1,0 +1,84 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "HardwareUsageNotifierConfigFile",
+  "description": "The JSON schema that validates the input file of the Hardware Usage Notifier. The input file defines all the parameters required for the tool to work as expected. For detailed documentation, see the description of the JSON schema's fields. For information on JSON schemas, see https://json-schema.org/specification.html",
+  "type": "object",
+  "properties": {
+    "monitors": {
+      "$ref": "#/definitions/monitors"
+    }
+  },
+  "definitions": {
+    "monitors": {
+      "title": "The array of monitors used by the tool.",
+      "description": "A collection of monitors that the tool will start.",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/monitor"
+      }
+    },
+    "monitor": {
+      "title": "A functional active unit that watches a metric and responds to threshold breaks.",
+      "description": "Defines what the tool will look for during the event loop and how it will react in case the looked-for metrics exceed the configured thresholds. A monitor has two states 'alarm' and 'active'. When the threshold is breached, the monitor enters the 'alarm' state, point at which a the configured notification is fired. When the threshold is no longer breached, the monitor returns to the 'active' state.",
+      "type": "object",
+      "required": [
+        "metric",
+        "threshold",
+        "notifier",
+        "configuration"
+      ],
+      "properties": {
+        "metric": {
+          "title": "The name of the file that implements the metric.",
+          "description": "The tool will search for the provided metric by its file name in the hardware_usage_notifier/metrics directory. The metric file must contain a single top-level class. Provided that the class defined in the metric file implements the abstract Metric class in hardware_usage_notifier/metrics/metric.py, the tool will use that metric according to the interface defined in the Metric class.",
+          "type": "string"
+        },
+        "threshold": {
+          "$ref": "#/definitions/threshold"
+        },
+        "notifier": {
+          "type": "string"
+        },
+        "configuration": {
+          "$ref": "#/definitions/configuration"
+        }
+      }
+    },
+    "threshold": {
+      "title": "The limit above which the metric notification will fire.",
+      "description": "For each event loop, the tool will evaluate the data extracted using the given metric against the threshold. If the threshold condition evaluates to true, then the notification fires.",
+      "type": "object",
+      "required": [
+        "comparator",
+        "limit",
+        "alarm_points",
+        "clear_points"
+      ],
+      "properties": {
+        "comparator": {
+          "title": "The name of the file that implements the comparator.",
+          "description": "A comparator evaluates the data extracted by the metric against the threshold and returns a boolean value. The comparator should return true when the metric data exceeds the desired threshold and return false otherwise. When the comparator returns  true, we say that it 'activated'.",
+          "type": "string"
+        },
+        "value": {
+          "title": "The threshold against which to compare the data extracted by the metric",
+          "description": "Used as part of the comparator, it defines the reference point against which to evaluate the metric data. The comparator defines the activation logic in respect with this value. Although it is a string, the comparator can cast it to any desired type.",
+          "type": "string"
+        },
+        "alarm_points": {
+          "title": "The number of consecutive activations (i.e. true return values) of the comparator, starting from which the monitor will enter 'alarm' state. The monitor can enter 'alarm' state only when in 'active' state.",
+          "type": "number"
+        },
+        "clear_points": {
+          "title": "The number of consecutive non-activations (i.e. false return values) of the comparator, starting from which the monitor will enter 'active' state. The monitor can enter 'active' state only when in 'alarm' state.",
+          "type": "number"
+        }
+      }
+    },
+    "configuration": {
+      "title": "The custom data required by the specified metric.",
+      "description": "Each monitor metric has specific configurations. For example, the Process.MemoryUsage metric requires the PID of the process which to analyze. The configuration field stores such data required by the monitor. The data is free-form and must be defined as a JSON object (no restrictions on the fields of the object).",
+      "type": "object"
+    }
+  }
+}

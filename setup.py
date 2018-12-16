@@ -20,7 +20,7 @@ setup(
         [console_scripts]
         hardware_usage_notifier=hardware_usage_notifier.cli.hardware_usage_notifier:cli
     ''',
-    install_requires=['click'],
+    install_requires=['click', 'jsonschema'],
     tests_require=['pytest']
     # url='http://pypi.python.org/pypi/TowelStuff/', Currently the URL is omitted because the package is not vended
     # license='LICENSE.txt', Currently the package is not licensed, but it will be in the near future
