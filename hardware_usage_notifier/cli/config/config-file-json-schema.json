@@ -22,21 +22,45 @@
       "description": "Defines what the tool will look for during the event loop and how it will react in case the looked-for metrics exceed the configured thresholds. A monitor has two states 'alarm' and 'active'. When the threshold is breached, the monitor enters the 'alarm' state, point at which a the configured notification is fired. When the threshold is no longer breached, the monitor returns to the 'active' state.",
       "type": "object",
       "required": [
+        "name",
         "metric",
         "threshold",
-        "notifier",
-        "configuration"
+        "interval",
+        "notifiers"
       ],
       "properties": {
-        "metric": {
-          "title": "The name of the file that implements the metric.",
-          "description": "The tool will search for the provided metric by its file name in the hardware_usage_notifier/metrics directory. The metric file must contain a single top-level class. Provided that the class defined in the metric file implements the abstract Metric class in hardware_usage_notifier/metrics/metric.py, the tool will use that metric according to the interface defined in the Metric class.",
+        "name": {
+          "description": "A name that uniquely identifies the monitor. No two monitors can have the same name. Will be included in any notification that is delivered by the tool.",
           "type": "string"
+        },
+        "description": {
+          "description": "The details of the monitor (i.e. what it does, why it does it etc.). Will be included in any notification that is delivered by the tool.",
+          "type": "string"
+        },
+        "metric": {
+          "$ref": "#/definitions/metric"
         },
         "threshold": {
           "$ref": "#/definitions/threshold"
         },
-        "notifier": {
+        "interval": {
+          "description": "The number of minutes between two full event cycles of a monitor. An event cycle is defined as a full **monitor - extract data - notify** loop. If the tool cannot satisfy the requirements of the interval, it will enter a back-filling  state and, if specified, will fire the monitor_failure notifier.",
+          "type": "number"
+        },
+        "notifiers": {
+          "$ref": "#/definitions/notifiers"
+        }
+      }
+    },
+    "metric": {
+      "title": "The details of the metric.",
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "description": "The tool will search for the provided metric by its file name in the hardware_usage_notifier/metrics directory. The metric file must contain a single top-level class. Provided that the class defined in the metric file implements the abstract Metric class in hardware_usage_notifier/metrics/metric.py, the tool will use that metric, according to the interface defined in the Metric class. A metric is just a function that returns a value. The value is subsequently used to compare it against the threshold.",
           "type": "string"
         },
         "configuration": {
@@ -50,14 +74,14 @@
       "type": "object",
       "required": [
         "comparator",
-        "limit",
+        "value",
         "alarm_points",
         "clear_points"
       ],
       "properties": {
         "comparator": {
           "title": "The name of the file that implements the comparator.",
-          "description": "A comparator evaluates the data extracted by the metric against the threshold and returns a boolean value. The comparator should return true when the metric data exceeds the desired threshold and return false otherwise. When the comparator returns  true, we say that it 'activated'.",
+          "description": "A comparator evaluates the data extracted by the metric against the threshold and returns a boolean value. The comparator should return true when the metric data exceeds the desired threshold and return false otherwise. When the comparator returns  true, we say that it 'activated'. The tool will search for the provided comparator by its file name in the hardware_usage_notifier/comparators directory. The comparator file must contain a single top-level class. Provided that the class defined in the comparator file implements the abstract Comparator class in hardware_usage_notifier/comparators/comparator.py, the tool will use that comparator, according to the interface defined in the Comparator class.",
           "type": "string"
         },
         "value": {
@@ -75,9 +99,40 @@
         }
       }
     },
+    "notifiers": {
+      "title": "Encapsulates definitions about all the notifiers involved in the correct functioning of the notification mechanism.",
+      "type": "object",
+      "properties": {
+        "monitor_alarm": {
+          "title": "The notifier that fires when the monitor enters 'alarm' state.",
+          "$ref": "#/definitions/notifier"
+        },
+        "monitor_failure": {
+          "title": "The notifier that fires when the monitor fails to satisfy any constraints imposed by its configuration.",
+          "$ref": "#/definitions/notifier"
+        }
+      }
+    },
+    "notifier": {
+      "title": "A functional component that delivers notifications based on monitoring events.",
+      "type": "object",
+      "required": [
+        "name",
+        "configuration"
+      ],
+      "properties": {
+        "name": {
+          "description": "The tool will search for the provided notifier by its file name in the hardware_usage_notifier/notifiers directory. The notifier file must contain a single top-level class. Provided that the class defined in the notifier file implements the abstract Notifier class in hardware_usage_notifier/notifiers/notifier.py, the tool will use that notifier, according to the interface defined in the Notifier class.",
+          "type": "string"
+        },
+        "configuration": {
+          "$ref": "#/definitions/configuration"
+        }
+      }
+    },
     "configuration": {
-      "title": "The custom data required by the specified metric.",
-      "description": "Each monitor metric has specific configurations. For example, the Process.MemoryUsage metric requires the PID of the process which to analyze. The configuration field stores such data required by the monitor. The data is free-form and must be defined as a JSON object (no restrictions on the fields of the object).",
+      "title": "Custom data that is required for the specified component to function properly.",
+      "description": "1. For monitors: Each monitor metric has specific configurations. For example, the Process.MemoryUsage metric requires the PID of the process which to analyze. The configuration field stores such data required by the monitor. The data is free-form and must be defined as a JSON object (no restrictions on the fields of the object). 2. For notifiers: A notifier might require additional data (configuration) to function properly. That data will be encapsulated in this field.",
       "type": "object"
     }
   }
