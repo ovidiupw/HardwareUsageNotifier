@@ -25,7 +25,7 @@ deploy the project on a live system.
     
 1. Go to your terminal and change the directory to the package root.
 
-1. Make the scripts in the package available to be run:
+1. Make the scripts in the package available to be run (if anything goes wrong, check the **Troubleshooting** subsection below):
     ```
     $ pip install virtualenv
     $ virtualenv venv

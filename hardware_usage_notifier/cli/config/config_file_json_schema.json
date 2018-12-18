@@ -3,6 +3,9 @@
   "title": "HardwareUsageNotifierConfigFile",
   "description": "The JSON schema that validates the input file of the Hardware Usage Notifier. The input file defines all the parameters required for the tool to work as expected. For detailed documentation, see the description of the JSON schema's fields. For information on JSON schemas, see https://json-schema.org/specification.html",
   "type": "object",
+  "required": [
+    "monitors"
+  ],
   "properties": {
     "monitors": {
       "$ref": "#/definitions/monitors"
