@@ -120,8 +120,7 @@
       "title": "A functional component that delivers notifications based on monitoring events.",
       "type": "object",
       "required": [
-        "name",
-        "configuration"
+        "name"
       ],
       "properties": {
         "name": {
