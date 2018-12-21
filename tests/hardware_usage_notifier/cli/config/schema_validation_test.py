@@ -53,7 +53,7 @@ ALARM_CONFIGURATION_NOT_OBJECT_CONFIG_FILE = os.path.join(TEST_RESOURCES_DIRECTO
 MONITOR_FAILURE_NOT_OBJECT_CONFIG_FILE = os.path.join(TEST_RESOURCES_DIRECTORY, 'monitor_failure_not_object_config.json')
 FAILURE_NAME_NOT_STRING_CONFIG_FILE = os.path.join(TEST_RESOURCES_DIRECTORY, 'failure_name_not_string_config.json')
 FAILURE_CONFIGURATION_NOT_OBJECT_CONFIG_FILE = os.path.join(TEST_RESOURCES_DIRECTORY, 'failure_configuration_not_object_config.json')
-
+SINGLE_MONITOR_CONFIG = os.path.join(TEST_RESOURCES_DIRECTORY, 'single_monitor_config.json')
 
 @pytest.fixture(scope='function')
 def config_json_schema():
@@ -490,4 +490,6 @@ def test_when_config_failure_configuration_not_object_then_schema_requires_objec
     )
 
 
-
+def test_when_config_well_formed_then_no_validation_error(config_json_schema):
+    single_monitor_config = read_json_from_file(SINGLE_MONITOR_CONFIG)
+    jsonschema.validate(single_monitor_config, config_json_schema)

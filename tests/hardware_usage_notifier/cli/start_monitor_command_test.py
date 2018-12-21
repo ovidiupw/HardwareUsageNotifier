@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+import os
+import click
+import jsonschema
+
 import pytest
 from click.testing import CliRunner
 
@@ -7,10 +11,10 @@ from hardware_usage_notifier.cli import exit_codes
 from hardware_usage_notifier.cli.commands.start_monitor import StartMonitor
 from hardware_usage_notifier.cli.hardware_usage_notifier import cli
 from hardware_usage_notifier.cli.options.help import Help
-from hardware_usage_notifier.util.file import create_empty_file
+from hardware_usage_notifier.util.file import create_empty_file, create_file
 from hardware_usage_notifier.util.string import string_contains
 
-start_monitor_command = StartMonitor()
+start_monitor_command = StartMonitor(click=click, jsonschema=jsonschema)
 help_option = Help()
 
 
@@ -50,7 +54,9 @@ def test_when_default_name_config_file_exists_and_is_empty_then_error(cli_runner
         ])
         assert command_result.exit_code == exit_codes.INVALID_ARGUMENT_EXIT_CODE
         assert string_contains(command_result.output,
-                               f"Could not parse JSON file at '{start_monitor_command.config_file.default}'. Failure at line '1', column '1':")
+                               f"Could not parse JSON file at "
+                               f"'{os.path.abspath(start_monitor_command.config_file.default)}'. "
+                               f"Failure at line '1', column '1':")
 
 
 def test_when_config_file_exists_and_is_empty_then_error(cli_runner):
@@ -64,4 +70,20 @@ def test_when_config_file_exists_and_is_empty_then_error(cli_runner):
         ])
         assert command_result.exit_code == exit_codes.INVALID_ARGUMENT_EXIT_CODE
         assert string_contains(command_result.output,
-                               f"Could not parse JSON file at '{config_file_name}'. Failure at line '1', column '1':")
+                               f"Could not parse JSON file at "
+                               f"'{os.path.abspath(config_file_name)}'. Failure at line '1', column '1':")
+
+
+def test_when_config_file_does_not_adhere_to_schema_then_error(cli_runner):
+    config_file_name = 'my-config-file.json'
+    with cli_runner.isolated_filesystem():
+        create_file(config_file_name, '{}')
+        command_result = cli_runner.invoke(cli, [
+            start_monitor_command.name,
+            start_monitor_command.config_file.short_name,
+            config_file_name
+        ])
+        assert command_result.exit_code == exit_codes.INVALID_ARGUMENT_EXIT_CODE
+        assert string_contains(command_result.output,
+                               f"Error parsing config file at '{os.path.abspath(config_file_name)}', path '[]': "
+                               f"'\'monitors\' is a required property'.")

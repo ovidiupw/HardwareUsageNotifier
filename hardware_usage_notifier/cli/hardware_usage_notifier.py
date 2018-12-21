@@ -10,6 +10,7 @@ as a library by importing the HardwareUsageNotifierCLI object.
 """
 
 import click
+import jsonschema
 
 from hardware_usage_notifier.cli import exit_codes
 from hardware_usage_notifier.cli.commands.start_monitor import StartMonitor
@@ -19,7 +20,7 @@ CLI_NAME = 'hardware_usage_notifier'
 help_option = Help()
 CLI_CONTEXT_SETTINGS = dict(help_option_names=[help_option.short_name, help_option.long_name])
 
-start_monitor_command = StartMonitor()
+start_monitor_command = StartMonitor(click=click, jsonschema=jsonschema)
 
 
 @click.group(name=CLI_NAME,
@@ -35,7 +36,7 @@ def cli():
               type=start_monitor_command.config_file.type,
               default=start_monitor_command.config_file.default,
               callback=start_monitor_command.config_file.callback)
-def start_monitor(config_file):
+def start_monitor(config):
     click.echo('Parsed config successfully. Will start monitor. For now, this is just a dummy message')
     exit(exit_codes.SUCCESS_EXIT_CODE)
 
