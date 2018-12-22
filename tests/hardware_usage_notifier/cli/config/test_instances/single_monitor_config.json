@@ -30,7 +30,7 @@
         "monitor_failure": {
           "name": "test_notifier_2.py",
           "configuration": {
-            "some_dummy_config_B": "123"
+            "some_dummy_config_C": "123"
           }
         }
       }

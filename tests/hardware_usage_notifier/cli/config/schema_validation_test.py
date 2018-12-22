@@ -38,22 +38,33 @@ NO_MONITOR_FAILURE_CONFIGURATION_CONFIG_FILE = os.path.join(TEST_RESOURCES_DIREC
 METRIC_NOT_OBJECT_CONFIG_FILE = os.path.join(TEST_RESOURCES_DIRECTORY, 'metric_not_object_config.json')
 THRESHOLD_NOT_OBJECT_CONFIG_FILE = os.path.join(TEST_RESOURCES_DIRECTORY, 'threshold_not_object_config.json')
 MONITOR_NAME_NOT_STRING_CONFIG_FILE = os.path.join(TEST_RESOURCES_DIRECTORY, 'monitor_name_not_string_config.json')
-MONITOR_DESCRIPTION_NOT_STRING_CONFIG_FILE = os.path.join(TEST_RESOURCES_DIRECTORY, 'monitor_description_not_string_config.json')
+MONITOR_DESCRIPTION_NOT_STRING_CONFIG_FILE = os.path.join(TEST_RESOURCES_DIRECTORY,
+                                                          'monitor_description_not_string_config.json')
 METRIC_NAME_NOT_STRING_CONFIG_FILE = os.path.join(TEST_RESOURCES_DIRECTORY, 'metric_name_not_string_config.json')
-METRIC_CONFIGURATION_NOT_OBJECT_CONFIG_FILE = os.path.join(TEST_RESOURCES_DIRECTORY, 'metric_configuration_not_object_config.json')
-THRESHOLD_COMPARATOR_NOT_STRING_CONFIG_FILE = os.path.join(TEST_RESOURCES_DIRECTORY, 'threshold_comparator_not_string_config.json')
-THRESHOLD_VALUE_NOT_STRING_CONFIG_FILE = os.path.join(TEST_RESOURCES_DIRECTORY, 'threshold_value_not_string_config.json')
-THRESHOLD_ALARM_POINTS_NOT_NUMBER_CONFIG_FILE = os.path.join(TEST_RESOURCES_DIRECTORY, 'threshold_alarm_points_not_number_config.json')
-THRESHOLD_CLEAR_POINTS_NOT_NUMBER_CONFIG_FILE = os.path.join(TEST_RESOURCES_DIRECTORY, 'threshold_clear_points_not_number_config.json')
-MONITOR_INTERVAL_NOT_NUMBER_CONFIG_FILE = os.path.join(TEST_RESOURCES_DIRECTORY, 'monitor_interval_not_number_config.json')
+METRIC_CONFIGURATION_NOT_OBJECT_CONFIG_FILE = os.path.join(TEST_RESOURCES_DIRECTORY,
+                                                           'metric_configuration_not_object_config.json')
+THRESHOLD_COMPARATOR_NOT_STRING_CONFIG_FILE = os.path.join(TEST_RESOURCES_DIRECTORY,
+                                                           'threshold_comparator_not_string_config.json')
+THRESHOLD_VALUE_NOT_STRING_CONFIG_FILE = os.path.join(TEST_RESOURCES_DIRECTORY,
+                                                      'threshold_value_not_string_config.json')
+THRESHOLD_ALARM_POINTS_NOT_NUMBER_CONFIG_FILE = os.path.join(TEST_RESOURCES_DIRECTORY,
+                                                             'threshold_alarm_points_not_number_config.json')
+THRESHOLD_CLEAR_POINTS_NOT_NUMBER_CONFIG_FILE = os.path.join(TEST_RESOURCES_DIRECTORY,
+                                                             'threshold_clear_points_not_number_config.json')
+MONITOR_INTERVAL_NOT_NUMBER_CONFIG_FILE = os.path.join(TEST_RESOURCES_DIRECTORY,
+                                                       'monitor_interval_not_number_config.json')
 NOTIFIERS_NOT_OBJECT_CONFIG_FILE = os.path.join(TEST_RESOURCES_DIRECTORY, 'notifiers_not_object_config.json')
 MONITOR_ALARM_NOT_OBJECT_CONFIG_FILE = os.path.join(TEST_RESOURCES_DIRECTORY, 'monitor_alarm_not_object_config.json')
 ALARM_NAME_NOT_STRING_CONFIG_FILE = os.path.join(TEST_RESOURCES_DIRECTORY, 'alarm_name_not_string_config.json')
-ALARM_CONFIGURATION_NOT_OBJECT_CONFIG_FILE = os.path.join(TEST_RESOURCES_DIRECTORY, 'alarm_configuration_not_object_config.json')
-MONITOR_FAILURE_NOT_OBJECT_CONFIG_FILE = os.path.join(TEST_RESOURCES_DIRECTORY, 'monitor_failure_not_object_config.json')
+ALARM_CONFIGURATION_NOT_OBJECT_CONFIG_FILE = os.path.join(TEST_RESOURCES_DIRECTORY,
+                                                          'alarm_configuration_not_object_config.json')
+MONITOR_FAILURE_NOT_OBJECT_CONFIG_FILE = os.path.join(TEST_RESOURCES_DIRECTORY,
+                                                      'monitor_failure_not_object_config.json')
 FAILURE_NAME_NOT_STRING_CONFIG_FILE = os.path.join(TEST_RESOURCES_DIRECTORY, 'failure_name_not_string_config.json')
-FAILURE_CONFIGURATION_NOT_OBJECT_CONFIG_FILE = os.path.join(TEST_RESOURCES_DIRECTORY, 'failure_configuration_not_object_config.json')
+FAILURE_CONFIGURATION_NOT_OBJECT_CONFIG_FILE = os.path.join(TEST_RESOURCES_DIRECTORY,
+                                                            'failure_configuration_not_object_config.json')
 SINGLE_MONITOR_CONFIG = os.path.join(TEST_RESOURCES_DIRECTORY, 'single_monitor_config.json')
+
 
 @pytest.fixture(scope='function')
 def config_json_schema():

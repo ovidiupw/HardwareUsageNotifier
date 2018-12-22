@@ -32,20 +32,32 @@ class Config(object):
             )
 
         try:
-            self.jsonschema.validate(config_json, Config.read_config_json_schema())
+            self.jsonschema.validate(config_json, self._read_config_json_schema())
         except self.jsonschema.exceptions.ValidationError as err:
             raise self.click.BadParameter(
                 f"Error parsing config file at '{os.path.abspath(config_file_path)}', path '{list(err.absolute_path)}':"
-                f" '{err.message}'."
+                f" '{err.args[0]}'."
             )
 
         for monitor_config_dict in config_json['monitors']:
             monitor = Monitor(monitor_config_dict)
             self.monitors.append(monitor)
 
+        self._assert_unique_monitor_names(self.monitors, config_file_path)
+
         return self
 
-    @staticmethod
-    def read_config_json_schema():
+    def _read_config_json_schema(self):
         json_schema_path = os.path.join(os.path.dirname(__file__), '..', 'config', 'config_file_json_schema.json')
         return read_json_from_file(json_schema_path)
+
+    def _assert_unique_monitor_names(self, monitors, config_file_path):
+        monitor_names = map(lambda monitor: monitor.name, monitors)
+        unique_monitor_names = set()
+        for monitor_name in monitor_names:
+            if monitor_name in unique_monitor_names:
+                raise self.click.BadParameter(
+                    f"Error parsing config file at '{os.path.abspath(config_file_path)}': "
+                    f"Duplicate monitor names are not allowed. However, detected duplicate name '{monitor_name}'!"
+                )
+            unique_monitor_names.add(monitor_name)
