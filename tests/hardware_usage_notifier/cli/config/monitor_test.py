@@ -1,6 +1,9 @@
 import pytest
 import os
 
+from hardware_usage_notifier.cli.config.metric import Metric
+from hardware_usage_notifier.cli.config.threshold import Threshold
+from hardware_usage_notifier.cli.config.interval import Interval
 from hardware_usage_notifier.cli.config.monitor import Monitor
 from hardware_usage_notifier.util.validators import RunnableExceptionValidator
 from hardware_usage_notifier.util.file import read_json_from_file
@@ -24,3 +27,13 @@ def test_when_monitor_name_empty_then_exception(monitor):
 def test_when_monitor_description_missing_then_no_exception(monitor):
     monitor.pop('description')
     Monitor(monitor)
+
+
+def test_when_monitor_well_formed_then_no_exception(monitor):
+    monitor_instance = Monitor(monitor)
+    assert monitor_instance.name == monitor['name']
+    assert monitor_instance.description == monitor['description']
+    assert monitor_instance.interval == Interval(monitor['interval'])
+    assert monitor_instance.metric == Metric(monitor['metric'])
+    assert monitor_instance.threshold == Threshold(monitor['threshold'])
+    assert monitor_instance.notifiers == Monitor.Notifiers(monitor['notifiers'])

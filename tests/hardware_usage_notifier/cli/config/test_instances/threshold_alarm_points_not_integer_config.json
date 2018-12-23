@@ -1,0 +1,39 @@
+{
+  "monitors": [
+    {
+      "name": "Monitor_1",
+      "description": "A description for Monitor_1",
+      "metric": {
+        "name": "test_metric.py",
+        "configuration": {
+          "some_dummy_config_A": [
+            "1",
+            "2",
+            "3"
+          ]
+        }
+      },
+      "threshold": {
+        "comparator": "test_comparator.py",
+        "value": "999",
+        "alarm_points": 3.2,
+        "clear_points": 1
+      },
+      "interval": 5,
+      "notifiers": {
+        "monitor_alarm": {
+          "name": "test_notifier_1.py",
+          "configuration": {
+            "some_dummy_config_B": "123"
+          }
+        },
+        "monitor_failure": {
+          "name": "test_notifier_2.py",
+          "configuration": {
+            "some_dummy_config_B": "123"
+          }
+        }
+      }
+    }
+  ]
+}

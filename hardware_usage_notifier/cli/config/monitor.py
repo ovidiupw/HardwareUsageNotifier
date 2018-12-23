@@ -17,7 +17,24 @@ class Monitor:
 
         assert len(self.name) != 0, 'The name of the monitor must contain at least one character!'
 
+    def __eq__(self, other: object) -> bool:
+        return self.name == other.name \
+               and self.description == other.description \
+               and self.interval == other.interval \
+               and self.metric == other.metric \
+               and self.threshold == other.threshold \
+               and self.notifiers == other.notifiers
+
+    def __hash__(self) -> int:
+        return hash((self.minutes, self.description, self.interval, self.metric, self.threshold, self.notifiers))
+
     class Notifiers:
         def __init__(self, notifiers_config_dict):
             self.monitor_alarm = Notifier(notifiers_config_dict['monitor_alarm'])
             self.monitor_failure = Notifier(notifiers_config_dict['monitor_failure'])
+
+        def __eq__(self, other: object) -> bool:
+            return self.monitor_alarm == other.monitor_alarm and self.monitor_failure == other.monitor_failure
+
+        def __hash__(self) -> int:
+            return hash((self.monitor_alarm, self.monitor_failure))

@@ -51,6 +51,10 @@ THRESHOLD_ALARM_POINTS_NOT_NUMBER_CONFIG_FILE = os.path.join(TEST_RESOURCES_DIRE
                                                              'threshold_alarm_points_not_number_config.json')
 THRESHOLD_CLEAR_POINTS_NOT_NUMBER_CONFIG_FILE = os.path.join(TEST_RESOURCES_DIRECTORY,
                                                              'threshold_clear_points_not_number_config.json')
+THRESHOLD_ALARM_POINTS_NOT_INTEGER_CONFIG_FILE = os.path.join(TEST_RESOURCES_DIRECTORY,
+                                                              'threshold_alarm_points_not_integer_config.json')
+THRESHOLD_CLEAR_POINTS_NOT_INTEGER_CONFIG_FILE = os.path.join(TEST_RESOURCES_DIRECTORY,
+                                                              'threshold_clear_points_not_integer_config.json')
 MONITOR_INTERVAL_NOT_NUMBER_CONFIG_FILE = os.path.join(TEST_RESOURCES_DIRECTORY,
                                                        'monitor_interval_not_number_config.json')
 NOTIFIERS_NOT_OBJECT_CONFIG_FILE = os.path.join(TEST_RESOURCES_DIRECTORY, 'notifiers_not_object_config.json')
@@ -388,7 +392,7 @@ def test_when_config_threshold_alarm_points_not_number_then_schema_requires_numb
         lambda: jsonschema.validate(threshold_alarm_points_not_number_config, config_json_schema))
     exception_validator.verify_json_schema_exception(
         jsonschema.exceptions.ValidationError,
-        "is not of type 'number'",
+        "is not of type 'integer'",
         ['monitors', 0, 'threshold', 'alarm_points']
     )
 
@@ -400,7 +404,31 @@ def test_when_config_threshold_clear_points_not_number_then_schema_requires_numb
         lambda: jsonschema.validate(threshold_clear_points_not_number_config, config_json_schema))
     exception_validator.verify_json_schema_exception(
         jsonschema.exceptions.ValidationError,
-        "is not of type 'number'",
+        "is not of type 'integer'",
+        ['monitors', 0, 'threshold', 'clear_points']
+    )
+
+
+def test_when_config_threshold_alarm_points_not_integer_then_schema_requires_integer(config_json_schema):
+    threshold_alarm_points_not_integer_config = read_json_from_file(THRESHOLD_ALARM_POINTS_NOT_INTEGER_CONFIG_FILE)
+
+    exception_validator = RunnableExceptionValidator(
+        lambda: jsonschema.validate(threshold_alarm_points_not_integer_config, config_json_schema))
+    exception_validator.verify_json_schema_exception(
+        jsonschema.exceptions.ValidationError,
+        "is not of type 'integer'",
+        ['monitors', 0, 'threshold', 'alarm_points']
+    )
+
+
+def test_when_config_threshold_clear_points_not_integer_then_schema_requires_integer(config_json_schema):
+    threshold_clear_points_not_integer_config = read_json_from_file(THRESHOLD_CLEAR_POINTS_NOT_INTEGER_CONFIG_FILE)
+
+    exception_validator = RunnableExceptionValidator(
+        lambda: jsonschema.validate(threshold_clear_points_not_integer_config, config_json_schema))
+    exception_validator.verify_json_schema_exception(
+        jsonschema.exceptions.ValidationError,
+        "is not of type 'integer'",
         ['monitors', 0, 'threshold', 'clear_points']
     )
 

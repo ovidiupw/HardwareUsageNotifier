@@ -15,7 +15,7 @@ class RunnableExceptionValidator:
                 e.absolute_path) == absolute_path, f"Expected exception to have occurred at object path '{absolute_path}', but got exception at object path '{e.absolute_path}'!"
             return
         raise Exception(
-            f"Expected function to raise exception of type '{type(exception)}', but function did not raise exception!")
+            f"Expected function to raise exception of type '{exception.__name__}', but function did not raise exception!")
 
     def verify_exception(self, exception, message_substring):
         try:
@@ -25,4 +25,4 @@ class RunnableExceptionValidator:
                                    message_substring), f"Expected exception message to contain string '{message_substring}', but got '{e.args[0]}'!"
             return
         raise Exception(
-            f"Expected function to raise exception of type '{type(exception)}', but function did not raise exception!")
+            f"Expected function to raise exception of type '{exception.__name__}', but function did not raise exception!")

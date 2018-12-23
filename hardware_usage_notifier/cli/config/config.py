@@ -40,12 +40,25 @@ class Config(object):
             )
 
         for monitor_config_dict in config_json['monitors']:
-            monitor = Monitor(monitor_config_dict)
+            try:
+                monitor = Monitor(monitor_config_dict)
+            except AssertionError as err:
+                raise self.click.BadParameter(
+                    f"Error initializing monitor from configuration:\n"
+                    f"{json.dumps(monitor_config_dict)}\n\n"
+                    f"{err.args[0]}"
+                )
             self.monitors.append(monitor)
 
         self._assert_unique_monitor_names(self.monitors, config_file_path)
 
         return self
+
+    def __eq__(self, other: object) -> bool:
+        return self.monitors == other.monitors
+
+    def __hash__(self) -> int:
+        return hash(self.monitors)
 
     def _read_config_json_schema(self):
         json_schema_path = os.path.join(os.path.dirname(__file__), '..', 'config', 'config_file_json_schema.json')

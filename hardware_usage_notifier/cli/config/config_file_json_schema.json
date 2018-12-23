@@ -94,11 +94,11 @@
         },
         "alarm_points": {
           "title": "The number of consecutive activations (i.e. true return values) of the comparator, starting from which the monitor will enter 'alarm' state. The monitor can enter 'alarm' state only when in 'active' state.",
-          "type": "number"
+          "type": "integer"
         },
         "clear_points": {
           "title": "The number of consecutive non-activations (i.e. false return values) of the comparator, starting from which the monitor will enter 'active' state. The monitor can enter 'active' state only when in 'alarm' state.",
-          "type": "number"
+          "type": "integer"
         }
       }
     },
