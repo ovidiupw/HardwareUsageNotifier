@@ -1,4 +1,5 @@
 import json
+import ast
 
 
 def create_empty_file(file_path):
@@ -13,3 +14,9 @@ def create_file(file_path, file_content):
 def read_json_from_file(file_path):
     with open(file_path, 'r') as file_descriptor:
         return json.load(file_descriptor)
+
+
+def list_classes_in_file(file_path):
+    with open(file_path) as file_descriptor:
+        node = ast.parse(file_descriptor.read())
+        return [n for n in node.body if isinstance(n, ast.ClassDef)]

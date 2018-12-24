@@ -16,7 +16,7 @@
       "threshold": {
         "comparator": "example_comparator.py",
         "value": "999",
-        "alarm_points": 3,
+        "alarm_points": -5,
         "clear_points": 1
       },
       "interval": 5,

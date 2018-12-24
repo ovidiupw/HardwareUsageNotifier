@@ -45,7 +45,7 @@ class Config(object):
             except AssertionError as err:
                 raise self.click.BadParameter(
                     f"Error initializing monitor from configuration:\n"
-                    f"{json.dumps(monitor_config_dict)}\n\n"
+                    f"{json.dumps(monitor_config_dict)}\n"
                     f"{err.args[0]}"
                 )
             self.monitors.append(monitor)

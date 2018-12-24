@@ -1,5 +1,7 @@
-from hardware_usage_notifier.util.string import string_contains
+import os
 
+from hardware_usage_notifier.util.string import string_contains
+from hardware_usage_notifier.util.file import list_classes_in_file
 
 class RunnableExceptionValidator:
     def __init__(self, function):
@@ -26,3 +28,13 @@ class RunnableExceptionValidator:
             return
         raise Exception(
             f"Expected function to raise exception of type '{exception.__name__}', but function did not raise exception!")
+
+
+class FileValidator:
+    @staticmethod
+    def is_file_path_valid(file_path):
+        return os.path.exists(file_path) and os.path.isfile(file_path)
+
+    @staticmethod
+    def does_file_contains_single_class(file_path):
+        return len(list_classes_in_file(file_path)) == 1
