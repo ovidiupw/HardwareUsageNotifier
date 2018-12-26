@@ -34,6 +34,7 @@ def test_when_monitor_well_formed_then_no_exception(monitor):
     assert monitor_instance.name == monitor['name']
     assert monitor_instance.description == monitor['description']
     assert monitor_instance.interval == Interval(monitor['interval'])
-    assert monitor_instance.metric == Metric(monitor['metric'])
+    assert monitor_instance.metric == Metric(
+        monitor['metric'], Monitor.METRICS_DIRECTORY, Monitor.METRIC_INSTANCES_PARENT_MODULE)
     assert monitor_instance.threshold == Threshold(monitor['threshold'])
     assert monitor_instance.notifiers == Monitor.Notifiers(monitor['notifiers'])

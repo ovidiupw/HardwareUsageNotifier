@@ -1,3 +1,5 @@
+import os
+
 from hardware_usage_notifier.cli.config.interval import Interval
 from hardware_usage_notifier.cli.config.metric import Metric
 from hardware_usage_notifier.cli.config.threshold import Threshold
@@ -6,12 +8,17 @@ from hardware_usage_notifier.cli.config.notifier import Notifier
 
 
 class Monitor:
+    METRICS_DIRECTORY = os.path.normpath(os.path.join(os.path.dirname(__file__), '..', '..', 'metrics'))
+    METRIC_INSTANCES_PARENT_MODULE = 'hardware_usage_notifier.metrics'
 
     def __init__(self, monitor_config_dict):
         self.name = monitor_config_dict['name']
         self.description = monitor_config_dict.get('description')  # Description is optional, thus we use 'get'
         self.interval = Interval(monitor_config_dict['interval'])
-        self.metric = Metric(monitor_config_dict['metric'])
+        self.metric = Metric(
+            config=monitor_config_dict['metric'],
+            metric_directory=Monitor.METRICS_DIRECTORY,
+            metric_parent_module=Monitor.METRIC_INSTANCES_PARENT_MODULE)
         self.threshold = Threshold(monitor_config_dict['threshold'])
         self.notifiers = Monitor.Notifiers(monitor_config_dict['notifiers'])
 

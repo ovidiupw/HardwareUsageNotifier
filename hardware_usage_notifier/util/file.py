@@ -20,3 +20,7 @@ def list_classes_in_file(file_path):
     with open(file_path) as file_descriptor:
         node = ast.parse(file_descriptor.read())
         return [n for n in node.body if isinstance(n, ast.ClassDef)]
+
+
+def list_class_names_in_file(file_path):
+    return list(map(lambda clazz: clazz.name, list_classes_in_file(file_path)))

@@ -36,5 +36,5 @@ class FileValidator:
         return os.path.exists(file_path) and os.path.isfile(file_path)
 
     @staticmethod
-    def does_file_contains_single_class(file_path):
+    def does_file_contain_single_class(file_path):
         return len(list_classes_in_file(file_path)) == 1
