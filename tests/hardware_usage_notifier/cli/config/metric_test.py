@@ -40,8 +40,8 @@ def test_when_metric_file_not_in_directory_then_exception(metric_config):
             metric_parent_module=METRIC_TEST_INSTANCES_MODULE))
     exception_validator.verify_exception(
         AssertionError,
-        f"The metric name must be the Python file name placed in the path '{METRIC_TEST_INSTANCES_DIRECTORY}, "
-        f"'but got {metric_config['name']}'!")
+        f"The metric name must be the Python file name placed in the path '{METRIC_TEST_INSTANCES_DIRECTORY}', "
+        f"but got '{metric_config['name']}'!")
 
 
 def test_when_metric_file_contains_no_python_class_then_exception(metric_config):

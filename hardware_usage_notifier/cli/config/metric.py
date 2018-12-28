@@ -1,6 +1,7 @@
 import os
 
 from hardware_usage_notifier.util.file import list_class_names_in_file
+from hardware_usage_notifier.util.string import build_module_name
 from hardware_usage_notifier.util.importer import create_object, get_class
 from hardware_usage_notifier.util.validators import FileValidator
 
@@ -28,9 +29,10 @@ class Metric:
 
         1.The metric name must be a valid Python file name, placed in the metric_directory directory;
 
-        2.The metric file must have a single metric class defined in it;
+        2.The metric file must have a single class defined in it;
 
-        3.The metric class must be a subclass of the abstract metric class defined in the metric_module_prefix module;
+        3.The metric class must be a subclass of the abstract metric class defined in the
+        METRIC_ABSTRACT_CLASS_MODULE module;
 
         4.The metric class must be instantiable. If a configuration dictionary is specified, the instantiation should
         support the configuration as an argument.
@@ -43,12 +45,12 @@ class Metric:
 
         :raises AssertionError: In case any of the metric definition contract requirements are not met.
         """
-        metric_file_path = Metric._build_metric_file_path(metric_file_name, metric_directory)
-
         assert len(metric_file_name) != 0, 'The name of the metric must contain at least one character!'
+
+        metric_file_path = os.path.join(metric_directory, metric_file_name)
         assert FileValidator.is_file_path_valid(file_path=metric_file_path), \
-            f"The metric name must be the Python file name placed in the path '{metric_directory}, " \
-                f"'but got {metric_file_name}'!"
+            f"The metric name must be the Python file name placed in the path '{metric_directory}', " \
+                f"but got '{metric_file_name}'!"
 
         class_names_in_file = list_class_names_in_file(metric_file_path)
         assert FileValidator.does_file_contain_single_class(file_path=metric_file_path), \
@@ -59,7 +61,7 @@ class Metric:
         class_names_in_file = list_class_names_in_file(metric_file_path)
         try:
             metric_instance = create_object(
-                Metric._build_metric_module_name(metric_file_name, metric_parent_module),
+                build_module_name(metric_parent_module, metric_file_name),
                 class_names_in_file[0],
                 metric_configuration)
             metric_abstract_class = get_class(Metric.METRIC_ABSTRACT_CLASS_MODULE, Metric.METRIC_ABSTRACT_CLASS_NAME)
@@ -73,14 +75,6 @@ class Metric:
         assert issubclass(type(metric_instance), metric_abstract_class), \
             f"The metric class defined in '{metric_file_name}' must be a subclass of the abstract Metric class " \
             f"defined in {os.path.join(Metric.METRIC_ABSTRACT_CLASS_MODULE, Metric.METRIC_ABSTRACT_CLASS_NAME)}"
-
-    @staticmethod
-    def _build_metric_file_path(metric_file_name, metric_directory):
-        return os.path.join(metric_directory, metric_file_name)
-
-    @staticmethod
-    def _build_metric_module_name(metric_file_name, metric_parent_module):
-        return f"{metric_parent_module}.{metric_file_name.replace('.py', '')}"
 
     def __eq__(self, other: object) -> bool:
         return self.name == other.name and self.configuration == other.configuration
