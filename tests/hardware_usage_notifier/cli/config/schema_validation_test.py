@@ -6,7 +6,7 @@ import pytest
 from hardware_usage_notifier.util.file import read_json_from_file
 from hardware_usage_notifier.util.validators import RunnableExceptionValidator
 
-TEST_RESOURCES_DIRECTORY = os.path.join(os.path.dirname(__file__), 'test_instances')
+TEST_RESOURCES_DIRECTORY = os.path.join(os.path.dirname(__file__), 'json_test_instances')
 
 EMPTY_CONFIG_FILE = os.path.join(TEST_RESOURCES_DIRECTORY, 'empty_config.json')
 EMPTY_JSON_CONFIG_FILE = os.path.join(TEST_RESOURCES_DIRECTORY, 'empty_json.json')

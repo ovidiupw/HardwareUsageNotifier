@@ -7,7 +7,7 @@ from hardware_usage_notifier.cli.config.config import Config
 from hardware_usage_notifier.util.validators import RunnableExceptionValidator
 from hardware_usage_notifier.util.file import read_json_from_file
 
-TEST_RESOURCES_DIRECTORY = os.path.join(os.path.dirname(__file__), 'test_instances')
+TEST_RESOURCES_DIRECTORY = os.path.join(os.path.dirname(__file__), 'json_test_instances')
 
 SINGLE_MONITOR_CONFIG_FILE_NAME = os.path.join(TEST_RESOURCES_DIRECTORY, 'single_monitor_config.json')
 DUPLICATE_MONITOR_NAMES_CONFIG_FILE_NAME = os.path.join(TEST_RESOURCES_DIRECTORY, 'duplicate_monitor_names_config.json')

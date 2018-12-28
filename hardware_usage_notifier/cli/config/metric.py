@@ -63,12 +63,16 @@ class Metric:
                 class_names_in_file[0],
                 metric_configuration)
             metric_abstract_class = get_class(Metric.METRIC_ABSTRACT_CLASS_MODULE, Metric.METRIC_ABSTRACT_CLASS_NAME)
+        except TypeError as err:
+            raise AssertionError(
+                f"{err.args[0]}. Please make sure that the metric class constructor takes a single argument "
+                f"representing the metric configuration (which might be empty/undefined)!")
         except Exception as err:
             raise AssertionError(err)
 
         assert issubclass(type(metric_instance), metric_abstract_class), \
             f"The metric class defined in '{metric_file_name}' must be a subclass of the abstract Metric class " \
-                f"defined in {os.path.join(metric_directory, 'metric.py')}"
+            f"defined in {os.path.join(Metric.METRIC_ABSTRACT_CLASS_MODULE, Metric.METRIC_ABSTRACT_CLASS_NAME)}"
 
     @staticmethod
     def _build_metric_file_path(metric_file_name, metric_directory):
