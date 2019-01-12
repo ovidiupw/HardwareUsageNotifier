@@ -77,8 +77,6 @@ class Threshold:
             raise AssertionError(
                 f"{err.args[0]}. Please make sure that the comparator class constructor takes a single argument "
                 f"representing the reference value for the comparison operation!")
-        except Exception as err:
-            raise AssertionError(err)
 
         assert issubclass(type(comparator_instance), comparator_abstract_class), \
             f"The comparator class defined in '{comparator_file_name}' must be a subclass of the abstract Comparator " \

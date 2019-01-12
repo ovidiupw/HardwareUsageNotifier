@@ -12,7 +12,7 @@ class Notifier:
 
     def __init__(self, config, notifier_directory, notifier_parent_module):
         self.name = config['name']
-        self.configuration = config['configuration']
+        self.configuration = config.get('configuration')
 
         Notifier._assert_notifier_is_abiding_the_contract(
             notifier_file_name=self.name,
@@ -70,8 +70,6 @@ class Notifier:
             raise AssertionError(
                 f"{err.args[0]}. Please make sure that the notifier class constructor takes a single argument "
                 f"representing the notifier configuration (which might be empty/undefined)!")
-        except Exception as err:
-            raise AssertionError(err)
 
         assert issubclass(type(notifier_instance), notifier_abstract_class), \
             f"The notifier class defined in '{notifier_file_name}' must be a subclass of the abstract Notifier class " \

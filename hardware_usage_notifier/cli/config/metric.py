@@ -69,8 +69,6 @@ class Metric:
             raise AssertionError(
                 f"{err.args[0]}. Please make sure that the metric class constructor takes a single argument "
                 f"representing the metric configuration (which might be empty/undefined)!")
-        except Exception as err:
-            raise AssertionError(err)
 
         assert issubclass(type(metric_instance), metric_abstract_class), \
             f"The metric class defined in '{metric_file_name}' must be a subclass of the abstract Metric class " \

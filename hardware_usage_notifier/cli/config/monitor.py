@@ -44,7 +44,7 @@ class Monitor:
                and self.notifiers == other.notifiers
 
     def __hash__(self) -> int:
-        return hash((self.minutes, self.description, self.interval, self.metric, self.threshold, self.notifiers))
+        return hash((self.name, self.description, self.interval, self.metric, self.threshold, self.notifiers))
 
     class Notifiers:
         def __init__(self, notifiers_config_dict, notifier_directory, notifier_parent_module):

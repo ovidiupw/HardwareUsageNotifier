@@ -1,6 +1,5 @@
 class Interval:
     def __init__(self, minutes):
-        # TODO validation
         self.minutes = minutes
 
         assert self.minutes > 0, f"The interval minutes must be a positive number, but got '{self.minutes}'."

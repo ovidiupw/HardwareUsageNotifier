@@ -49,13 +49,29 @@ deploy the project on a live system.
 
     ```
 
-## Running the tests
+## Tests
 
+### Running the tests
 1. Go to the root of this package and run:
     ```
     pip install pytest
     pytest
     ```
+### Generate test coverage reports
+1. Go to the root of this package and run:
+    ```
+    pip install pytest-cov
+    ```
+
+1. In order to  generate a test coverage report for the whole project, run:
+   ```
+   pytest --cov=hardware_usage_notifier tests/
+   ```
+
+1. If, instead, you want to get the coverage report for a specific part of the project, specify only that module:
+   ```
+   pytest --cov=hardware_usage_notifier/cli/config tests/
+   ```
 
 ## Deployment
 
