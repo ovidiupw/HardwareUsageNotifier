@@ -1,0 +1,28 @@
+version: 1
+formatters:
+  consoleFormatter:
+    format: '%(asctime)s | %(message)s'
+    datefmt: %m/%d/%Y %I:%M:%S %p
+  traceFormatter:
+    format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    datefmt: %m/%d/%Y %I:%M:%S %p
+handlers:
+  consoleHandler:
+    class: logging.StreamHandler
+    level: INFO
+    formatter: consoleFormatter
+    stream: ext://sys.stdout
+  traceHandler:
+    class: logging.FileHandler
+    level: NOTSET
+    formatter: traceFormatter
+    filename: 'hardware-usage-notifier.log'
+    mode: 'a'
+loggers:
+  consoleAndTraceLogger:
+    level: NOTSET
+    handlers: [consoleHandler, traceHandler]
+    propagate: yes
+root:
+  level: NOTSET
+  handlers: [consoleAndTraceLogger]

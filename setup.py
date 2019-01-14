@@ -20,8 +20,10 @@ setup(
         [console_scripts]
         hardware_usage_notifier=hardware_usage_notifier.cli.hardware_usage_notifier:cli
     ''',
-    install_requires=['click', 'jsonschema'],
-    tests_require=['pytest', 'pytest-cov']
+    # pytest-env as install_requires in order for CLI-run tests to have environment variable support
+    install_requires=['click', 'jsonschema', 'click_log', 'pytest-env'],
+    # pytest-env also in tests_require in order for IDE-run tests to have environment variable support
+    tests_require=['pytest', 'pytest-cov', 'pytest-env']
     # url='http://pypi.python.org/pypi/TowelStuff/', Currently the URL is omitted because the package is not vended
     # license='LICENSE.txt', Currently the package is not licensed, but it will be in the near future
 )
