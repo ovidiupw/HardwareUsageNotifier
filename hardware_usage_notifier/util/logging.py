@@ -6,6 +6,7 @@ import uuid
 DATE_FORMAT = '%m/%d/%Y %I:%M:%S %p %Z'
 TRACE_LOG_FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 SIMPLE_LOG_FORMAT = '%(asctime)s - %(message)s'
+LOGGER_ID = 'Logger'
 
 
 def build_production_logger(logger_name=__name__):

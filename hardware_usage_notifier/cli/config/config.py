@@ -6,6 +6,7 @@ import jsonschema as jsonschema_library
 
 from hardware_usage_notifier.util.file import read_json_from_file
 from hardware_usage_notifier.cli.config.monitor import Monitor
+from hardware_usage_notifier.util.exception import log_click_callback_exceptions
 
 
 class Config(object):
@@ -19,6 +20,7 @@ class Config(object):
         self.click = click
         self.jsonschema = jsonschema
 
+    @log_click_callback_exceptions
     def from_cli_file_path_param(self, cli_context=None, param_name=None, config_file_path=None):
         if not os.path.isfile(config_file_path):
             raise self.click.BadParameter('The supplied config file path must exist and not be a directory.')

@@ -9,48 +9,55 @@ If this file is executed, the __main__ will initialize and start the CLI. Howeve
 as a library by importing the HardwareUsageNotifierCLI object.
 """
 
+import os
+
 import click
 import click_log
 import jsonschema
-import os
 
 from hardware_usage_notifier.cli import exit_codes
 from hardware_usage_notifier.cli.commands.start_monitor import StartMonitor
 from hardware_usage_notifier.cli.options.help import Help
+from hardware_usage_notifier.util.logging import LOGGER_ID
 from hardware_usage_notifier.util.logging import build_production_logger, build_test_logger
 
 CLI_NAME = 'hardware_usage_notifier'
-HELP_OPTION = Help()
-CLI_CONTEXT_SETTINGS = dict(help_option_names=[HELP_OPTION.short_name, HELP_OPTION.long_name])
-START_MONITOR_COMMAND = StartMonitor(click=click, jsonschema=jsonschema)
+
+_HELP_OPTION = Help()
+_CLI_CONTEXT_SETTINGS = dict(help_option_names=[_HELP_OPTION.short_name, _HELP_OPTION.long_name])
+_START_MONITOR_COMMAND = StartMonitor(click=click, jsonschema=jsonschema)
 
 try:
     if os.environ['RUN_ENV'] == 'test':
-        LOG = build_test_logger()
+        _LOG = build_test_logger()
     else:
-        LOG = build_production_logger()
+        _LOG = build_production_logger()
 except KeyError:
-    LOG = build_production_logger()
+    _LOG = build_production_logger()
 
 
 @click.group(name=CLI_NAME,
-             context_settings=CLI_CONTEXT_SETTINGS)
-@click_log.simple_verbosity_option(LOG)
-def cli():
-    LOG.info("Initializing CLI...")
+             context_settings=_CLI_CONTEXT_SETTINGS)
+@click_log.simple_verbosity_option(_LOG)
+@click.pass_context
+def cli(context):
+    # Make logger available for each sub-command of the CLI; Found as context.meta[LOGGER]
+    context.meta[LOGGER_ID] = _LOG
+    context.meta[LOGGER_ID].info("Initializing CLI...")
     pass
 
 
-@cli.command(name=START_MONITOR_COMMAND.name)
-@click.option(START_MONITOR_COMMAND.config_file.short_name,
-              START_MONITOR_COMMAND.config_file.long_name,
-              required=START_MONITOR_COMMAND.config_file.required,
-              type=START_MONITOR_COMMAND.config_file.type,
-              default=START_MONITOR_COMMAND.config_file.default,
-              callback=START_MONITOR_COMMAND.config_file.callback)
-@click_log.simple_verbosity_option(LOG)
-def start_monitor(config):
-    LOG.info('Parsed config successfully. Will start monitor. For now, this is just a dummy message')
+@cli.command(name=_START_MONITOR_COMMAND.name)
+@click.option(_START_MONITOR_COMMAND.config_file.short_name,
+              _START_MONITOR_COMMAND.config_file.long_name,
+              required=_START_MONITOR_COMMAND.config_file.required,
+              type=_START_MONITOR_COMMAND.config_file.type,
+              default=_START_MONITOR_COMMAND.config_file.default,
+              callback=_START_MONITOR_COMMAND.config_file.callback)
+@click.pass_context
+def start_monitor(context, config):
+    context.meta[LOGGER_ID] \
+        .info('Parsed config successfully. Will start monitor. For now, this is just a dummy message')
     exit(exit_codes.SUCCESS_EXIT_CODE)
 
 
