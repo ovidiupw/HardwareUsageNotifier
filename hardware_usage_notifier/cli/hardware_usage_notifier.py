@@ -14,18 +14,21 @@ import os
 import click
 import click_log
 import jsonschema
+import atexit
 
 from hardware_usage_notifier.cli import exit_codes
 from hardware_usage_notifier.cli.commands.start_monitor import StartMonitor
 from hardware_usage_notifier.cli.options.help import Help
 from hardware_usage_notifier.util.logging import LOGGER_ID
-from hardware_usage_notifier.util.logging import build_production_logger, build_test_logger
+from hardware_usage_notifier.util.logging \
+    import build_production_logger, build_test_logger, cleanup_empty_log_files, shut_down_loggers
 
 CLI_NAME = 'hardware_usage_notifier'
 
 _HELP_OPTION = Help()
 _CLI_CONTEXT_SETTINGS = dict(help_option_names=[_HELP_OPTION.short_name, _HELP_OPTION.long_name])
 _START_MONITOR_COMMAND = StartMonitor(click=click, jsonschema=jsonschema)
+_WAIT_BEFORE_CLEANUP_SECONDS = 2
 
 try:
     if os.environ['RUN_ENV'] == 'test':
@@ -64,3 +67,6 @@ def start_monitor(context, config):
 if __name__ == "__main__":
     cli.add_command(start_monitor)
     cli()
+
+atexit.register(cleanup_empty_log_files, directory='./')
+atexit.register(shut_down_loggers)

@@ -1,11 +1,14 @@
+import json
 import os
 import click
 import jsonschema
-import json
+from unittest.mock import MagicMock
+from callee import String, Contains, EndsWith
 
 from hardware_usage_notifier.cli.config.config import Config
 from hardware_usage_notifier.util.validators import RunnableExceptionValidator
 from hardware_usage_notifier.util.file import read_json_from_file
+from hardware_usage_notifier.util.logging import LOGGER_ID
 
 TEST_RESOURCES_DIRECTORY = os.path.join(os.path.dirname(__file__), 'json_test_instances')
 
@@ -13,6 +16,8 @@ SINGLE_MONITOR_CONFIG_FILE_NAME = os.path.join(TEST_RESOURCES_DIRECTORY, 'single
 DUPLICATE_MONITOR_NAMES_CONFIG_FILE_NAME = os.path.join(TEST_RESOURCES_DIRECTORY, 'duplicate_monitor_names_config.json')
 NEGATIVE_ALARM_POINTS_CONFIG_FILE_NAME = os.path.join(
     TEST_RESOURCES_DIRECTORY, 'negative_alarm_points_monitor_config.json')
+
+TEST_EXCEPTION_MESSAGE = 'This is a test-raised exception.'
 
 
 def test_when_config_read_from_file_then_monitors_initialized_correctly():
@@ -61,3 +66,26 @@ def test_when_config_monitor_invalid_then_exception():
         f"{json.dumps(expected_monitor_config)}\n"
         f"The threshold alarm points must be a positive integer, but got '-5'!"
     )
+
+
+def raise_exception():
+    raise Exception(TEST_EXCEPTION_MESSAGE)
+
+
+def test_when_cli_context_given_and_exception_then_exception_intercepted_and_logged():
+    config = Config(click=click, jsonschema=jsonschema)
+
+    logger = MagicMock()
+    logger.error = MagicMock()
+    cli_context = MagicMock()
+    cli_context.meta = MagicMock()
+    cli_context.meta[LOGGER_ID] = logger
+
+    exception_validator = RunnableExceptionValidator(
+        lambda: config.from_cli_file_path_param(
+            config_file_path=DUPLICATE_MONITOR_NAMES_CONFIG_FILE_NAME,
+            cli_context=cli_context))
+    exception_validator.verify_exception(click.BadParameter, 'Error parsing config file')
+
+    cli_context.meta[LOGGER_ID].error.assert_called_with(
+        String() & Contains('Error parsing config file') & EndsWith('\n'))
